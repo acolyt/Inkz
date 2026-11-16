@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ทริปหุบป่าตาด–เขาค้อ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f6f1; --card:#ffffff; --ink:#1a1d18; --muted:#636b5f; --line:#dfe5da;
+  --accent:#2f7a3f; --accent-ink:#ffffff; --chip:#e9efe5; --go:#1a73e8; --warn:#c2410c;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#111411; --card:#1b201b; --ink:#eef2eb; --muted:#9aa594; --line:#2d352c;
+    --accent:#6cc47f; --accent-ink:#0b1a0e; --chip:#242b23; --go:#8ab4f8; --warn:#fb923c; }
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans Thai",-apple-system,system-ui,sans-serif;font-size:17px;line-height:1.5;
+  padding:0 0 calc(24px + env(safe-area-inset-bottom));}
+header{padding:calc(14px + env(safe-area-inset-top)) 16px 8px;}
+h1{font-size:22px;margin:0 0 2px;font-weight:700}
+.sub{color:var(--muted);font-size:14px;margin:0}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 12px 10px;
+  padding-top:calc(8px + env(safe-area-inset-top));display:flex;gap:6px;border-bottom:1px solid var(--line)}
+nav a{flex:1;text-align:center;text-decoration:none;color:var(--ink);background:var(--chip);
+  border-radius:12px;padding:10px 4px;font-size:14px;font-weight:600;line-height:1.25}
+nav a.on{background:var(--accent);color:var(--accent-ink)}
+main{padding:12px 12px 0;max-width:560px;margin:0 auto}
+.route{display:block;text-align:center;text-decoration:none;background:var(--go);color:#fff;
+  font-weight:700;border-radius:14px;padding:14px;margin:4px 0 14px;font-size:17px}
+@media (prefers-color-scheme: dark){.route{color:#0b1b33}}
+.intro{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:14px;font-size:15px}
+.intro b{color:var(--accent)}
+.stop{display:flex;gap:12px;margin-bottom:12px}
+.time{flex:0 0 58px;text-align:right;font-weight:700;font-size:16px;padding-top:12px;font-variant-numeric:tabular-nums}
+.card{flex:1;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;min-width:0}
+.card h3{margin:0 0 4px;font-size:17px;line-height:1.35}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:2px 0 6px}
+.chip{font-size:12.5px;background:var(--chip);border-radius:999px;padding:2px 9px;color:var(--muted)}
+.chip.t{color:var(--ink);font-weight:600}
+.chip.fee{color:var(--accent);font-weight:600}
+.card p{margin:4px 0;font-size:15px}
+.note{color:var(--muted);font-size:14px}
+.warn{color:var(--warn);font-size:14px;font-weight:500}
+.nav-btn{display:inline-block;margin-top:8px;text-decoration:none;color:var(--go);font-weight:600;font-size:15px;
+  border:1.5px solid var(--go);border-radius:10px;padding:6px 12px}
+.list .stop .time{display:none}
+h2{font-size:18px;margin:20px 4px 10px}
+.tips{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 14px 6px 30px;font-size:15px}
+.tips li{margin:6px 0}
+.cost{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px 14px;font-size:15px}
+.cost div{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid var(--line)}
+.cost div:last-child{border-bottom:0;font-weight:700}
+section{display:none}
+section.on{display:block}
+footer{color:var(--muted);font-size:12.5px;text-align:center;margin:20px 16px 0}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:8px}
+.row .nav-btn{margin-top:0}
+.ctrl{display:flex;gap:6px;margin-left:auto}
+.b{font:inherit;font-size:14px;font-weight:600;border:1.5px solid var(--line);background:var(--chip);color:var(--ink);
+  border-radius:10px;padding:6px 10px;min-height:36px}
+.b:disabled{opacity:.35}
+.b.on{border-color:var(--accent);color:var(--accent)}
+.tools{display:flex;gap:8px;margin-top:10px}
+.leg{font-size:13px;color:var(--muted);margin:-4px 0 8px 70px}
+.stop.skip .card{opacity:.55;border-style:dashed}
+.stop.skip h3{text-decoration:line-through}
+.bad{color:#dc2626;font-size:14px;font-weight:600;margin:4px 0}
+@media (prefers-color-scheme: dark){.bad{color:#f87171}}
+.date{font-weight:700;color:var(--accent);margin:2px 4px 8px;font-size:16px}
+.seg{display:flex;gap:8px;margin:4px 0 12px}
+.seg .b{flex:1;padding:10px 6px;line-height:1.3}
+.seg .b small{font-weight:500;color:var(--muted)}
+.seg .b.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.seg .b.on small{color:var(--accent-ink)}
+.b.add{border-color:var(--accent);color:var(--accent)}
+a.b{text-decoration:none;display:inline-flex;align-items:center}
+.intrip{font-size:13.5px;color:var(--accent);font-weight:600;align-self:center}
+.stop.added .card{border-color:var(--accent);border-width:1.5px}
+nav a small{font-weight:500;font-size:11.5px}
+nav a{padding:8px 2px}
+button.time{font:inherit;font-weight:700;font-size:16px;color:var(--ink);background:none;border:0;padding:12px 0 0;text-align:right;cursor:pointer}
+button.time span{display:block;font-size:12px;opacity:.6}
+button.time.pin{color:var(--accent)}
+.edit{background:var(--chip);border-radius:12px;padding:10px;margin:6px 0 8px}
+.edit label{display:flex;align-items:center;gap:8px;margin:4px 0;font-size:15px}
+.edit input{font:inherit;font-size:16px;padding:6px 8px;border:1.5px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink)}
+.edit input[type=number]{width:80px}
+.erow{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.seg.small .b{font-size:13.5px;padding:8px 4px}
+</style>
+</head>
+<body>
+<header>
+  <h1>ทริปเขาค้อ → หุบป่าตาด</h1>
+  <p class="sub">จ. 23 – พ. 25 พ.ย. 2569 · รถตู้ 7–8 คน</p>
+</header>
+<nav id="tabs">
+  <a href="#day1" data-v="day1">วันที่ 1<br><small>จ.23 เขาค้อ</small></a>
+  <a href="#day2" data-v="day2">วันที่ 2<br><small>อ.24 อุทัยฯ</small></a>
+  <a href="#day3" data-v="day3">วันที่ 3<br><small>พ.25 กลับบ้าน</small></a>
+  <a href="#places" data-v="places">ที่เที่ยว<br><small>เพิ่มเติม</small></a>
+</nav>
+<main>
+  <section id="day1"></section>
+  <section id="day2"></section>
+  <section id="day3"></section>
+  <section id="places"></section>
+  <footer>เวลาและระยะทางเป็นค่าประมาณ · ค่าเข้าและเวลาเปิดจากรีวิว Google Maps ควรเช็กอีกครั้งก่อนไป</footer>
+</main>
+<script>
+const P=(n,id)=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent(n)+"&query_place_id="+id;
+const R=(s)=>{const o=s[0],d=s[s.length-1],w=s.slice(1,-1);
+  let u="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(o[0])+"&origin_place_id="+o[1]+"&destination="+encodeURIComponent(d[0])+"&destination_place_id="+d[1];
+  if(w.length)u+="&waypoints="+encodeURIComponent(w.map(x=>x[0]).join("|"))+"&waypoint_place_ids="+encodeURIComponent(w.map(x=>x[1]).join("|"));
+  return u;};
+const ID={
+  panason:["Panason Garden Home 4","ChIJC176G-5kHTERhznPmjPIoio"],
+  wtk:["วัดถ้ำเขาวง","ChIJHUEIBahE4TARZZCbZb0jb2g"],
+  giant:["ต้นไม้ยักษ์ บ้านไร่","ChIJAwJB4lZC4TARFt-bkLC0qTo"],
+  hup:["หุบป่าตาด","ChIJX_4MuO0X4TARFJ6kIYVsWog"],
+  bck:["บ้านชายเขา ไทย-สวิตเซอร์แลนด์","ChIJ4X1qclgX4TARozEiWUlqtKU"],
+  khun:["THE KHUN","ChIJyV46GAAR4TAR46UgbjS6JLs"],
+  monkae:["ม่อนแกะ เขาค้อ","ChIJyY4inTo_IDERVKF2PtI-lcs"],
+  hydrangea:["ไร่ดอกไฮเดรนเยีย เขาค้อ","ChIJHa-pKYxBIDERL9Ng16X9amg"],
+  terrace:["Khao Kho Flower Terrace","ChIJ5-BrqylBIDERSJNdrub6dRc"],
+  phason:["วัดพระธาตุผาซ่อนแก้ว","ChIJkajMwEdDIDERgiy1dQDPKOo"],
+  market:["ตลาดซาวไฮ่ บ้านไร่","ChIJK80B_09C4TARkQ8BNSvq6u0"],
+};
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+// ===== helpers =====
+const hm = m=>{ m=Math.round(m/5)*5; return String(Math.floor(m/60)%24).padStart(2,"0")+":"+String(m%60).padStart(2,"0"); };
+const toMin = s=>{ const [h,m]=s.split(":").map(Number); return h*60+m; };
+const durTxt = m=> m>=60 ? (Math.floor(m/60)+" ชม."+(m%60?" "+(m%60)+" นาที":"")) : m+" นาที";
+const DAYN = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสฯ","ศุกร์","เสาร์"];
+function hav(a,b){ const R=6371, r=x=>x*Math.PI/180, dl=r(b.lat-a.lat), dg=r(b.lng-a.lng);
+  const h=Math.sin(dl/2)**2+Math.cos(r(a.lat))*Math.cos(r(b.lat))*Math.sin(dg/2)**2; return 2*R*Math.asin(Math.sqrt(h)); }
+const roadMin = (a,b)=>Math.round(hav(a,b)*1.4/55*60 + 5); // ระยะเส้นตรง ×1.4 ที่ ~55 กม./ชม. + 5 นาที
+const G = (name,pid,lat,lng,o)=>Object.assign({name,id:[name,pid],lat,lng},o);
+
+// ===== ที่เที่ยวเพิ่มเติม (เพิ่มเข้าทริปได้) =====
+const EXTRA = {
+  ut: [ // อุทัยธานี → วันที่ 2 / 3
+    ["🟢 โซนหุบป่าตาด",[
+      G("เขาปลาร้า (ภาพเขียนสีโบราณ)","ChIJRzt3aMUQ4TARIJvdij_W2EA",15.3742681,99.6377316,{k:"x_plara",type:"เดินเขา",dur:90,open:"08:30",close:"13:00",fee:"~30 (ตั๋วเดียวกับหุบป่าตาด)",what:"เดินขึ้นชัน ไปกลับ ~1.5 ชม. วิวสวย พกน้ำ",note:"⚠️ เปิดถึง 13:00"}),
+      G("วัดถ้ำทอง","ChIJvc9Wm1YX4TARwzBJpc2ZejM",15.381322,99.62824,{k:"x_thong",type:"ไหว้พระ",dur:20,what:"วัดของหลวงพ่อทองหยดผู้ค้นพบหุบป่าตาด",note:"ระวังลิงแย่งของ"}),
+      G("ถ้ำลมรัตนคูหา","ChIJX8N9X1cR4TARfoIsqMOWO1o",15.3749539,99.633784,{k:"x_lom",type:"แวะชม",dur:15,what:"ถ้ำริมถนน พระพุทธรูป แสงลอดเพดาน"}),
+      G("สวิตเซอร์แลนด์เมืองไทย","ChIJK_VOLAUR4TARV8usUusRbBY",15.359048,99.6341391,{k:"x_swiss",type:"ถ่ายรูป",dur:15,open:"06:00",close:"18:00",what:"หอชมวิวถ่ายรูป ติดบ้านชายเขา"}),
+      G("At The Mountain","ChIJ5aSZ-I4R4TAR_dwnH1F50aA",15.375145,99.6345356,{k:"x_atm",type:"ร้านอาหาร/คาเฟ่",dur:45,what:"ร้านยอดนิยม มีแมว เหมาะมื้อเที่ยง"}),
+      G("THE WALL Café & Bistro","ChIJsxmCYQAX4TAR2iKtTYG3d3w",15.3701875,99.6324375,{k:"x_wall",type:"คาเฟ่",dur:30,what:"คาเฟ่ติดหน้าผาภูเขา"}),
+      G("My Merchain","ChIJq7b9FPYR4TARU_EK7uDgiIw",15.3576789,99.6345837,{k:"x_merchain",type:"คาเฟ่",dur:30,what:"⭐ 4.8 คาเฟ่ + พูลวิลล่า วิวสวย ห้องน้ำสะอาด"}),
+      G("หุบป่าตาด Bike Camp","ChIJDS3zBaEX4TARgoH_1gr4eRA",15.3675729,99.6309608,{k:"x_bike",type:"คาเฟ่",dur:30,open:"08:00",close:"17:30",closed:[1],what:"คาเฟ่ธีมจักรยาน วิวภูเขา"}),
+      G("บ้านวิวเขา","ChIJSXWSSnwR4TAR-YUFZmYB2Oc",15.3187319,99.6439509,{k:"x_viewkhao",type:"คาเฟ่",dur:30,open:"07:00",close:"19:00",what:"⭐ 5.0 วิวภูเขา ทุ่งดอกไม้สีเหลือง ใกล้ THE KHUN"}),
+    ]],
+    ["🟡 ห้วยคต / ลานสัก",[
+      G("บ่อน้ำร้อนสะเมาทอง","ChIJwz8Rrjo94TAR6bZgpUDB8Hc",15.3423682,99.5158349,{k:"x_samo",type:"แช่น้ำร้อน",dur:60,open:"08:00",close:"18:00",what:"แช่เท้า บ่อ ห้องส่วนตัว ซาวน่า ราคาถูก"}),
+      G("วนอุทยานห้วยคต","ChIJlaMfksMX4TARldB-_z7SrZE",15.2979984,99.5682336,{k:"x_huaikhot",type:"ธรรมชาติ",dur:45,open:"08:30",close:"16:30",what:"อ่างเก็บน้ำ เช่าแพ เรือพาย"}),
+      G("Alisun Cafe","ChIJjdlmJAAZ4TARVnRlJmgGyfY",15.433579,99.579347,{k:"x_alisun",type:"คาเฟ่",dur:30,open:"08:30",close:"17:00",what:"⭐ 4.9 วิวเขาฆ้องชัย"}),
+      G("น้ำตกแก่งสาวน้อย","ChIJHY3L89s74TAR5ylgbH16eNc",15.3136045,99.4557228,{k:"x_kaeng",type:"น้ำตก",dur:60,what:"น้ำใส คนน้อย ลงเล่นน้ำได้",note:"ไม่มีสัญญาณโทรศัพท์"}),
+    ]],
+    ["🔵 ฝั่งบ้านไร่",[
+      G("ตลาดซาวไฮ่","ChIJK80B_09C4TARkQ8BNSvq6u0",15.0778031,99.5117486,{k:"x_saohai",type:"ตลาด",dur:45,open:"08:00",close:"16:00",closed:[1,2,3,4,5],what:"ตลาดชุมชน ผักป่า สมุนไพร ผ้าทอ",note:"เปิดแค่ ส.–อา."}),
+      G("วัดถ้ำเขาประทุน","ChIJdWjnmlZv4TARqhrWfpEYHi4",15.0196556,99.6406045,{k:"x_pratun",type:"ไหว้พระ",dur:60,open:"06:30",close:"18:00",what:"วิหารไม้สักแกะสลัก บันได ~510 ขั้น"}),
+      G("ฝายบางสวรรค์","ChIJ9zfcFvFH4TARSPaonj6PO8E",15.1958745,99.426173,{k:"x_fai",type:"ธรรมชาติ",dur:40,what:"เดินลุยน้ำบนสันฝาย ฟรี",note:"⚠️ สวยเมื่อน้ำล้นฝาย · ไม่มีลานจอด · พื้นลื่น"}),
+      G("น้ำตกผาร่มเย็น","ChIJ_8YS_9NF4TARQZ1lNBtb3qE",15.11082,99.40639,{k:"x_pharom",type:"น้ำตก",dur:60,what:"น้ำตกหินปูนมีมอส ฟรี บันไดเยอะ",note:"ที่จอดน้อย"}),
+    ]],
+    ["🟣 ไกลออกไป",[
+      G("ศูนย์เพาะเลี้ยงสัตว์ป่าห้วยขาแข้ง","ChIJ34t-RgzY4DAR9EXUciPC_FU",15.5749255,99.3977841,{k:"x_breed",type:"สัตว์ป่า",dur:60,open:"08:30",close:"16:30",fee:"~20 บาท",what:"เสือ หมี ชะนี กวาง วัวแดง"}),
+      G("เขตรักษาพันธุ์สัตว์ป่าห้วยขาแข้ง","ChIJRSXbjUrW4DAR8VjHpfNsJ1c",15.6086432,99.320848,{k:"x_hkk",type:"มรดกโลก",dur:90,open:"08:00",close:"16:00",what:"อนุสรณ์สืบ นาคะเสถียร"}),
+      G("แก่นมะกรูด (สวนพฤกษศาสตร์)","ChIJe4lGNnlJ4TARGeEsAT4yJhU",15.1662635,99.2821483,{k:"x_kaen",type:"ขึ้นเขา",dur:90,what:"หมู่บ้านกะเหรี่ยง ดอกไม้เมืองหนาว",note:"⚠️ ทางขึ้นชัน โค้งหักศอก ใช้เกียร์ต่ำ"}),
+      G("วัดสังกัสรัตนคีรี (เขาสะแกกรัง)","ChIJs0QZh2iv4TARjtJrKeHRo4A",15.3786289,100.0169372,{k:"x_sakae",type:"ชมวิวเมือง",dur:45,what:"ตัวเมืองอุทัยฯ พระอาทิตย์ตกสวย"}),
+      G("วัดท่าซุง","ChIJidwYwHCv4TAR2IPL9r8XWSk",15.3324677,100.0726309,{k:"x_thasung",type:"ไหว้พระ",dur:60,open:"09:00",close:"16:00",what:"วิหารแก้ว 100 ม. ปราสาททองคำ",note:"⚠️ ปิดช่วงเที่ยง ~11:30–14:00"}),
+    ]],
+  ],
+  kk: [ // เขาค้อ → วันที่ 1
+    ["🌄 จุดชมวิว",[
+      G("จุดชมวิวเขาตะเคียนโง๊ะ","ChIJ_UZdWPwUIDERiMDhPKwr4jA",16.5848383,100.9318226,{k:"x_takhian",type:"ชมวิว",dur:30,what:"⭐ 4.5 วิว 360° ดูได้ทั้งพระอาทิตย์ขึ้นและตก คนไม่เยอะ",note:"อยู่ทางเข้าเขาค้อฝั่งตะวันตก ใกล้ม่อนแกะ"}),
+      G("จุดชมวิวเขาค้อ (ริมถนน)","ChIJvwk6MA5AIDERm_-oZLqVaLI",16.6300034,100.9954175,{k:"x_kkview",type:"ชมวิว",dur:20,what:"⭐ 4.6 (5,600+ รีวิว) จุดดูทะเลหมอกยอดนิยม มีร้านอาหารฝั่งตรงข้าม",note:"หมอกสวยช่วง 06:00–07:00"}),
+      G("ทุ่งกังหันลมเขาค้อ","ChIJvxuMkVBBIDERwtisjIdeu5o",16.686239,100.9925384,{k:"x_wind",type:"ชมวิว",dur:45,fee:"จอด 30 · รถราง 60",what:"วิวกังหันลม สวนดอกไม้บนยอด",note:"รีวิวบอกค่อนข้างเชิงพาณิชย์ ร้านค้าบังวิว"}),
+      G("สกายวอล์คภูเลิศ","ChIJUxFXGmFDIDERS9v5lU4s-XA",16.7708377,101.0567626,{k:"x_skywalk",type:"ชมวิว",dur:40,open:"07:00",close:"18:00",fee:"ผู้ใหญ่ 80 · เด็ก 40",what:"ทางเดินกระจก มีเครื่องเล่นเด็ก (เสียเพิ่ม)",note:"รีวิวแบ่งสองฝั่ง ส่วนกระจกเล็ก · ใกล้วัดผาซ่อนแก้ว"}),
+      G("จุดชมวิวภูทับเบิก","ChIJ9eNVVABZIDERskCDfPVleVc",16.892616,101.099518,{k:"x_thapboek",type:"ชมวิว",dur:60,what:"จุดสูงสุดของเทือกเขาเพชรบูรณ์ ~1,667 ม. ไร่กะหล่ำ ตลาดม้ง",note:"⚠️ ทางขึ้นชันมาก 111 โค้ง · ห้ามขับขึ้นจุดชมวิวยอดสุด"}),
+    ]],
+    ["🏛️ ประวัติศาสตร์ / ธรรมชาติ",[
+      G("อนุสรณ์สถานผู้เสียสละ เขาค้อ","ChIJ439ut_4_IDERxt85jMm1JLM",16.614959,100.9856128,{k:"x_memorial",type:"ประวัติศาสตร์",dur:45,open:"07:00",close:"17:00",fee:"ฟรี",what:"อนุสรณ์บนยอดเขา มีรถถัง ฮ. บังเกอร์ วิวสวย"}),
+      G("พิพิธภัณฑ์อาวุธ เขาค้อ","ChIJg70CKeI_IDERHMWLHwmtxAY",16.6036779,100.9834611,{k:"x_weapon",type:"พิพิธภัณฑ์",dur:40,open:"06:00",close:"18:00",fee:"10 บาท",what:"อาวุธและเรื่องราวสมรภูมิเขาค้อ มีป้ายภาษาอังกฤษ"}),
+      G("พระตำหนักเขาค้อ","ChIJhcQjRYoVIDERocmLc-vsdGM",16.5530175,100.9759956,{k:"x_palace",type:"สวน/ป่าสน",dur:45,open:"06:00",close:"18:00",what:"สวนสวย ป่าสน อากาศเย็น ชมจากด้านนอก"}),
+    ]],
+    ["☕ คาเฟ่ / ร้านอาหาร",[
+      G("บ้านเขาคาเฟ่","ChIJQ1ac7Y9BIDERjmsGK03m8dA",16.6373156,100.994652,{k:"x_baankhao",type:"คาเฟ่",dur:45,open:"08:00",close:"21:30",what:"⭐ 4.7 พิซซ่า กาแฟ วิวทะเลหมอก",note:"ทางลงค่อนข้างชัน รับกลุ่มเล็ก"}),
+      G("ร้านอีสาน แอบแซ่บ เขาค้อ","ChIJd4lRWgBBIDER_lp6fQTftJc",16.6445312,101.0102436,{k:"x_isan",type:"ร้านอาหาร",dur:45,open:"09:00",close:"22:00",what:"⭐ 5.0 อาหารอีสาน อร่อย ราคาไม่แพง"}),
+      G("ครัวเขาค้อ","ChIJFxC5RxJDIDERzfiZqvGPKWA",16.7695286,101.0443973,{k:"x_krua",type:"ร้านอาหาร",dur:45,open:"08:00",close:"21:00",what:"ร้านเก่าแก่ ใกล้วัดผาซ่อนแก้ว ห้องแอร์",note:"คนเยอะ อาจรอนาน"}),
+      G("ไร่สองเรา Kitchen","ChIJo_q75glDIDERtB9yygs5EL8",16.7572842,101.0415064,{k:"x_songrao",type:"ร้านอาหาร",dur:60,open:"11:00",close:"21:00",what:"⭐ 4.6 วิวภูเขา ดนตรีสด จานใหญ่"}),
+      G("ม่อนซ่อนแก้วคาเฟ่","ChIJY92sQKhFIDERtm5gtBtgUuw",16.783268,101.0839348,{k:"x_monsorn",type:"คาเฟ่",dur:30,what:"⭐ 4.7 คาเฟ่ไม้ มีแมว วิวภูเขา",note:"ทางไปภูทับเบิก"}),
+      G("Kod Mok Cafe","ChIJuzHHUABFIDERpXgmjFRxJBA",16.7832313,101.083849,{k:"x_kodmok",type:"คาเฟ่",dur:30,open:"07:00",close:"18:00",what:"⭐ 4.7 วิวหุบเขามองเห็นวัดผาซ่อนแก้ว"}),
+    ]],
+  ],
+};
+const POOL = {kk:{},ut:{}}; for(const r of ["kk","ut"]) for(const [,items] of EXTRA[r]) for(const it of items) POOL[r][it.k]=it;
+
+// ===== planner =====
+const planners = {};
+const fmtIn = m=>String(Math.floor(m/60)%24).padStart(2,"0")+":"+String(Math.round(m)%60).padStart(2,"0");
+function Planner(cfg){
+  const BASE = cfg.stops.map(s=>s.k);
+  const BY = Object.assign({}, POOL[cfg.region], Object.fromEntries(cfg.stops.map(s=>[s.k,s])));
+  const DEFAULT = {order:BASE.slice(), off:{}, pin:{}, dur:{}};
+  const clone = o=>JSON.parse(JSON.stringify(o));
+  let state = (()=>{ try{ const s=JSON.parse(localStorage.getItem(cfg.key));
+    if(s&&Array.isArray(s.order)&&s.order.every(k=>BY[k])&&BASE.every(k=>s.order.includes(k))&&s.order[0]===BASE[0]&&s.order[s.order.length-1]===BASE[BASE.length-1]) return Object.assign({pin:{},dur:{}},s); }catch(e){} return clone(DEFAULT); })();
+  let hist = [], editing = null;
+  const save = ()=>{ try{ localStorage.setItem(cfg.key, JSON.stringify(state)); }catch(e){} };
+  const commit = fn=>{ hist.push(clone(state)); fn(); save(); renderAll(); };
+  const est = (a,b)=> (cfg.est && cfg.est(a,b,BY)) ?? roadMin(a,b);
+  const dur = s=> state.dur[s.k] ?? s.dur;
+  const wd = cfg.date.getDay();
+
+  function plan(){
+    const seq = state.order.map(k=>BY[k]);
+    const t0 = state.pin[seq[0].k] ?? cfg.start;
+    let t = t0, prev = seq[0], pend = [], out = [{s:prev, arr:t0, dep:t0}], drive = 0, inlArr = {};
+    for(let i=1;i<seq.length;i++){
+      const s = seq[i];
+      if(state.off[s.k]){ out.push({s, skipped:true}); continue; }
+      if(s.inline){ pend.push(s); out.push({s}); continue; }
+      const leg = est(prev, s); let cur = t, driven = 0;
+      for(const p of pend){ const d = Math.max(0, Math.min(p.offset, leg) - driven); cur += d; driven += d;
+        if(state.pin[p.k]!=null) cur = state.pin[p.k]; inlArr[p.k] = cur; cur += dur(p); }
+      let arr = cur + (leg - driven), wait = 0, pinned = state.pin[s.k]!=null;
+      if(pinned) arr = state.pin[s.k];
+      else if(s.open && arr < toMin(s.open)){ wait = toMin(s.open)-arr; arr = toMin(s.open); }
+      out.push({s, arr, dep: arr + dur(s), leg, wait, inl:pend, pinned});
+      drive += leg; t = arr + dur(s); prev = s; pend = [];
+    }
+    return {out, inlArr, end:t, drive};
+  }
+
+  function editor(s, curTime){
+    const isEnd = s.fixed==="end", isStart = s.fixed==="start";
+    return `<div class="edit">
+      <label>${isStart?"เวลาออก":"เวลาถึง"} <input type="time" data-f="time" value="${fmtIn(curTime)}"></label>
+      ${(isStart||isEnd)?"":`<label>อยู่นาน <input type="number" inputmode="numeric" min="0" step="5" data-f="dur" value="${dur(s)}"> นาที</label>`}
+      <div class="erow"><button class="b add" data-e="save">บันทึก</button>
+      ${(state.pin[s.k]!=null||state.dur[s.k]!=null)?`<button class="b" data-e="clear">ใช้เวลาอัตโนมัติ</button>`:""}
+      <button class="b" data-e="cancel">ปิด</button></div>
+      <p class="note">${isStart?"เวลาของทุกจุดถัดไปจะเลื่อนตาม":"ตั้งเวลาถึงเอง (📌) แล้วจุดถัดไปจะคำนวณต่อจากเวลานี้ · \"ใช้เวลาอัตโนมัติ\" เพื่อกลับไปใช้เวลาที่คำนวณจากระยะทาง"}</p>
+    </div>`;
+  }
+
+  function card(r, inlArr, idx, n){
+    const s = r.s, off = !!state.off[s.k], movable = !s.fixed, added = !BASE.includes(s.k);
+    let time = "", warn = "", tmin = null;
+    if(!off){
+      if(s.closed && s.closed.includes(wd)) warn += `<p class="bad">⛔ ปิดวัน${DAYN[wd]} (วันที่ไป)</p>`;
+      if(s.inline){ tmin = inlArr[s.k]; time = tmin!=null ? hm(tmin) : ""; }
+      else { tmin = r.arr; time = hm(r.arr);
+        if(r.wait) warn += `<p class="note">⏳ ถึงก่อนเปิด รอ ~${durTxt(Math.round(r.wait/5)*5)}</p>`;
+        if(s.close){ const c=toMin(s.close);
+          if(r.arr >= c) warn += `<p class="bad">⛔ ไปถึงหลังเวลาปิด (${s.close}) · ลองยกเลิกหรือย้ายลำดับ</p>`;
+          else if(r.dep > c) warn += `<p class="bad">⚠️ ปิด ${s.close} · เหลือเวลาเที่ยวแค่ ~${durTxt(Math.max(0,Math.round((c-r.arr)/5)*5))}</p>`;
+        }
+      }
+    }
+    const pinned = state.pin[s.k]!=null, dEdited = state.dur[s.k]!=null;
+    const legLine = (!off && !s.inline && r.leg!=null) ? `<div class="leg">🚐 ขับ ~${durTxt(Math.round(r.leg/5)*5)}${(r.inl&&r.inl.length)?" + แวะ"+r.inl.map(x=>x.name.replace("ระหว่างทาง","")).join(", "):""}</div>` : "";
+    const ctrls = movable ? `<div class="ctrl">
+        ${added ? `<button data-act="rm" data-k="${s.k}" class="b">🗑 ลบ</button>`
+          : off ? `<button data-act="on" data-k="${s.k}" class="b on">↩︎ เอากลับ</button>`
+                : `<button data-act="off" data-k="${s.k}" class="b">✕ ยกเลิก</button>`}
+        <button data-act="up" data-k="${s.k}" class="b" ${idx<=1?"disabled":""}>▲</button>
+        <button data-act="down" data-k="${s.k}" class="b" ${idx>=n-2?"disabled":""}>▼</button>
+      </div>` : "";
+    const hours = (s.open||s.close) ? `<span class="chip">🕘 ${s.open||""}–${s.close||""}</span>` : "";
+    const timeBtn = off ? `<div class="time">—</div>` : `<button class="time tbtn ${pinned?"pin":""}" data-edit="${s.k}">${pinned?"📌":""}${time}<span>✏️</span></button>`;
+    return `${legLine}<div class="stop ${off?"skip":""} ${added?"added":""}">${timeBtn}<div class="card">
+      <h3>${added?"＋ ":""}${esc(s.name)}</h3>
+      <div class="chips"><span class="chip t">${esc(s.type)}${dur(s)?" · "+(dEdited?"✏️":"")+durTxt(dur(s)):""}</span>${hours}${s.fee?`<span class="chip fee">💰 ${esc(s.fee)}</span>`:""}</div>
+      ${editing===s.k && !off ? editor(s, tmin ?? cfg.start) : ""}
+      ${off?`<p class="note">ยกเลิกแล้ว · เวลาด้านล่างคำนวณใหม่แล้ว</p>`:""}
+      ${!off&&s.what?`<p>${esc(s.what)}</p>`:""}
+      ${!off&&s.note?`<p class="${s.note.includes("⚠️")?"warn":"note"}">${esc(s.note)}</p>`:""}
+      ${warn}
+      <div class="row">${s.id&&!off?`<a class="nav-btn" href="${P(s.id[0],s.id[1])}">📍 นำทาง</a>`:""}${ctrls}</div>
+    </div></div>`;
+  }
+
+  function render(){
+    const p = plan(), n = state.order.length;
+    const active = state.order.map(k=>BY[k]).filter(s=>!s.inline && !state.off[s.k]);
+    let h = `<div class="date">📅 ${esc(cfg.dateLabel)}</div>`;
+    h += `<a class="route" href="${R(active.map(s=>s.id))}">🗺️ เปิดเส้นทางวันนี้ใน Google Maps</a>`;
+    if(active.length>10) h += `<p class="warn">⚠️ จุดแวะเกิน 10 จุด Google Maps อาจไม่รับทั้งหมด</p>`;
+    h += `<div class="intro">ออก <b>${hm(p.out[0].arr)}</b> → ${esc(cfg.endLabel)} ราว <b>${hm(p.end)}</b> · ขับรวม ~${durTxt(Math.round(p.drive/5)*5)}
+          ${cfg.introNote?`<br>${cfg.introNote}`:""}
+          <br><span class="note">แตะที่เวลา ✏️ เพื่อแก้เวลาถึง/เวลาอยู่ของแต่ละจุด</span>
+          <div class="tools"><button class="b" data-tool="undo" ${hist.length?"":"disabled"}>↩︎ ย้อนกลับ</button><button class="b" data-tool="reset">รีเซ็ตแผน</button><a class="b" href="#places" data-tool="places">＋ เพิ่มที่เที่ยว</a></div></div>`;
+    h += p.out.map((r,i)=>card(r,p.inlArr,i,n)).join("");
+    h += `<h2>${esc(cfg.tipsTitle)}</h2><ul class="tips">`+cfg.tips.map(t=>`<li>${esc(t)}</li>`).join("")+`</ul>`;
+    if(cfg.cost) h += `<h2>💰 ค่าเข้าโดยประมาณ (ต่อคน)</h2><div class="cost">`+cfg.cost.map(([a,b])=>`<div><span>${esc(a)}</span><span>${esc(b)}</span></div>`).join("")+`</div>`;
+    const el = document.getElementById(cfg.el); el.innerHTML = h;
+    el.querySelectorAll("button[data-act]").forEach(b=>b.onclick=()=>act(b.dataset.act,b.dataset.k));
+    el.querySelectorAll("button[data-edit]").forEach(b=>b.onclick=()=>{ editing = editing===b.dataset.edit ? null : b.dataset.edit; render(); });
+    const ed = el.querySelector(".edit");
+    if(ed){
+      const k = editing;
+      ed.querySelector('[data-e="cancel"]').onclick=()=>{ editing=null; render(); };
+      const clr = ed.querySelector('[data-e="clear"]'); if(clr) clr.onclick=()=>{ editing=null; commit(()=>{ delete state.pin[k]; delete state.dur[k]; }); };
+      ed.querySelector('[data-e="save"]').onclick=()=>{
+        const tv = ed.querySelector('[data-f="time"]').value, dv = ed.querySelector('[data-f="dur"]');
+        editing=null;
+        commit(()=>{
+          const cur = plan(), row = cur.out.find(r=>r.s.k===k);
+          const auto = BY[k].inline ? cur.inlArr[k] : row && row.arr;
+          if(tv){ const m = toMin(tv); if(auto==null || Math.round(m)!==Math.round(auto/5)*5) state.pin[k]=m; }
+          if(dv && dv.value!==""){ const v=Math.max(0,Math.round(+dv.value)); if(v!==BY[k].dur) state.dur[k]=v; else delete state.dur[k]; }
+        });
+      };
+    }
+    el.querySelector('[data-tool="undo"]').onclick=undo;
+    el.querySelector('[data-tool="reset"]').onclick=()=>commit(()=>{ state=clone(DEFAULT); });
+    el.querySelector('[data-tool="places"]').onclick=()=>{ placesRegion=cfg.region; placesDay=cfg.day; renderPlaces(); };
+  }
+  function act(a,k){
+    commit(()=>{
+      const o=state.order;
+      if(a==="off") state.off[k]=true;
+      else if(a==="on") delete state.off[k];
+      else if(a==="rm"){ const i=o.indexOf(k); if(i>0) o.splice(i,1); delete state.off[k]; delete state.pin[k]; delete state.dur[k]; }
+      else if(a==="add"){ if(!o.includes(k)) o.splice(o.length-1,0,k); }
+      else { const i=o.indexOf(k), j=a==="up"?i-1:i+1; if(j>=1 && j<=o.length-2) [o[i],o[j]]=[o[j],o[i]]; }
+    });
+  }
+  function undo(){ if(hist.length){ state=hist.pop(); save(); renderAll(); } }
+  const api = {render, plan, act, undo, has:k=>state.order.includes(k), wd, day:cfg.day, region:cfg.region, short:cfg.short,
+    nearest:(x)=>{ let best=null; for(const k of state.order){ const s=BY[k]; if(s.inline||state.off[k]||s.k===x.k||s.lat==null) continue; const m=roadMin(s,x); if(!best||m<best.m) best={s,m}; } return best; }};
+  planners[cfg.day]=api; return api;
+}
+
+const MONKAE={lat:16.5883808,lng:100.9902789}, KHUN={lat:15.3327743,lng:99.6683275}, WTK={lat:15.0315139,lng:99.4558604};
+
+// ----- วันที่ 1: จ. 23 พ.ย. 69 · เขาค้อ -----
+Planner({
+  day:1, region:"kk", short:"วันที่ 1 · จ. 23", el:"day1", key:"hpt-d1-kk-v2", start:5*60, endLabel:"ถึงวัดผาซ่อนแก้ว", date:new Date(2026,10,23), dateLabel:"วันจันทร์ที่ 23 พ.ย. 2569 · เขาค้อ",
+  est:(a,b)=> a.k==="pan" ? 330 + Math.max(0, roadMin(MONKAE,b) - 5) : null, // กรุงเทพฯ → เขาค้อ ~400 กม. ~5.5 ชม.
+  introNote:"⚠️ ขับไกล ~400 กม. ประมาณ 5.5 ชม. (ทางสระบุรี–เพชรบูรณ์) · ถ้าเริ่มจากปลูกรักรีสอร์ท ออกเร็วขึ้นราว 1 ชม. 10 นาที",
+  stops:[
+    {k:"pan", fixed:"start", name:"พนาสนธิ์การ์เด้นโฮม 4", id:ID.panason, lat:13.8299656, lng:100.7433321, type:"ออกเดินทาง", dur:0, what:"มุ่งหน้าเขาค้อ เพชรบูรณ์"},
+    {k:"bf", inline:true, offset:120, name:"ข้าวเช้าระหว่างทาง", type:"ข้าวเช้า", dur:30, what:"เติมน้ำมัน เข้าห้องน้ำ"},
+    {k:"monkae", name:"ม่อนแกะ เขาค้อ", id:ID.monkae, lat:16.5883808, lng:100.9902789, type:"เที่ยว", dur:45, open:"07:30", close:"17:30", fee:"ผู้ใหญ่ ~100 · เด็ก 30–40", what:"ให้อาหารแกะ กอดแกะ นั่งรถไฟเล็ก มีคาเฟ่"},
+    {k:"lunch", inline:true, offset:10, name:"ข้าวเที่ยง", type:"มื้อเที่ยง", dur:45, what:"เช่น ร้านอีสาน แอบแซ่บ หรือบ้านเขาคาเฟ่ (ดูในที่เที่ยวเพิ่มเติม)"},
+    {k:"hydrangea", name:"ไร่ดอกไฮเดรนเยีย", id:ID.hydrangea, lat:16.6797423, lng:101.0335266, type:"เที่ยว", dur:60, open:"08:00", close:"17:00", fee:"~60 บาท", what:"สวนดอกไม้ สไลเดอร์สายรุ้ง มีรถกระบะรับขึ้นเนินฟรี", note:"โชว์ตั๋วที่คาเฟ่ ลด 20 บาท"},
+    {k:"terrace", name:"Flower Terrace + คาเฟ่", id:ID.terrace, lat:16.6957383, lng:101.036698, type:"เที่ยว", dur:60, open:"07:00", close:"17:00", fee:"~60 บาท", what:"สวนดอกไม้ขั้นบันได คาเฟ่อยู่ด้านบน"},
+    {k:"phason", fixed:"end", name:"วัดพระธาตุผาซ่อนแก้ว", id:ID.phason, lat:16.790141, lng:101.0509634, type:"เที่ยว · อยู่ถึงพระอาทิตย์ตก", dur:0, fee:"ฟรี · จอดรถ ~30", what:"วัดประดับโมเสก พระพุทธรูป 5 องค์ริมหน้าผา ⭐ 4.7", note:"แต่งกายสุภาพ · ทางขึ้นชัน ใช้เกียร์ต่ำ · เปิด 05:00–21:00 · พระอาทิตย์ตก ~17:50"},
+  ],
+  tipsTitle:"ข้อควรรู้วันที่ 1",
+  tips:[
+    "⚠️ ยังไม่มีที่พักคืนวันที่ 23 ที่เขาค้อ ควรจองใกล้วัดผาซ่อนแก้ว (หน้าหนาวเต็มเร็ว)",
+    "วันนี้มีเวลาเหลือช่วงบ่าย เพิ่มที่เที่ยวเขาค้อได้จากแท็บ \"ที่เที่ยวเพิ่มเติม\"",
+    "ทางขึ้นลงเขาค้อคดเคี้ยว ขาลงใช้เกียร์ 2–3 ห้ามเหยียบเบรกแช่ · ตอนเย็นอากาศเย็น เตรียมเสื้อกันหนาว",
+    "เวลาขับเป็นค่าประมาณ ดูเวลาจริงจากปุ่มเส้นทาง · แผนที่แก้ไว้จะจำในเครื่องนี้เท่านั้น",
+  ],
+  cost:[["ม่อนแกะ","~100"],["ไร่ไฮเดรนเยีย","~60"],["Flower Terrace","~60"],["วัดผาซ่อนแก้ว","ฟรี"],["รวมต่อคน (ผู้ใหญ่)","~220 บาท"]],
+});
+
+// ----- วันที่ 2: อ. 24 พ.ย. 69 · อุทัยธานี → THE KHUN -----
+Planner({
+  day:2, region:"ut", short:"วันที่ 2 · อ. 24", el:"day2", key:"hpt-d2-ut-v2", start:6*60, endLabel:"ถึง THE KHUN", date:new Date(2026,10,24), dateLabel:"วันอังคารที่ 24 พ.ย. 2569 · อุทัยธานี",
+  est:(a,b)=> a.k==="kkstay" ? 320 + Math.max(0, roadMin(KHUN,b) - 5) : null, // เขาค้อ → อุทัยฯ ~5.3 ชม.
+  introNote:"⚠️ ขับไกลจากเขาค้อ ~5 ชม.+ ช่วงเช้า",
+  stops:[
+    {k:"kkstay", fixed:"start", name:"ออกจากที่พักเขาค้อ", id:ID.phason, lat:16.790141, lng:101.0509634, type:"ออกเดินทาง", dur:0, what:"ปุ่มเส้นทางใช้วัดผาซ่อนแก้วเป็นจุดเริ่มแทนที่พัก"},
+    {k:"bf", inline:true, offset:90, name:"ข้าวเช้าระหว่างทาง", type:"ข้าวเช้า", dur:30, what:"เติมน้ำมัน เข้าห้องน้ำ"},
+    {k:"hup", name:"หุบป่าตาด", id:ID.hup, lat:15.3771147, lng:99.6309258, type:"เที่ยว", dur:60, open:"08:30", close:"16:00", fee:"~30 บาท", what:"หุบเขายุคดึกดำบรรพ์ ต้นตาด ถ้ำหินงอก"},
+    {k:"bck", name:"บ้านชายเขา ไทย-สวิตเซอร์แลนด์", id:ID.bck, lat:15.3609992, lng:99.63349, type:"ชมวิว", dur:45, open:"08:30", close:"16:30", closed:[4], what:"วิว 360° เขาหินปูนกับไร่ข้าวโพด", note:"ปิดวันพฤหัสฯ (วันอังคารเปิด) · จอดริมถนน"},
+    {k:"lunch", inline:true, offset:5, name:"ข้าวเที่ยง", type:"มื้อเที่ยง", dur:45, what:"แถวหุบป่าตาด เช่น At The Mountain / My Merchain"},
+    {k:"chonglom", name:"จุดชมวิวผาช่องลม", id:["จุดชมวิวผาช่องลม เขาช่องลม","ChIJnaElVwAT4TARWfzeoyZb5n0"], lat:15.2649234, lng:99.7154693, type:"ชมวิว", dur:40, open:"07:00", close:"18:00", what:"เดินขึ้นไม่ถึง 10 นาที ทางไม่ชัน วิวภูเขา 360°", note:"เริ่มเดินที่วัดคลองตะเคียน"},
+    {k:"khun", fixed:"end", name:"THE KHUN (ที่พัก)", id:ID.khun, lat:15.3327743, lng:99.6683275, type:"เช็กอิน", dur:0, what:"⭐ 4.8 ล้อมหน้าผาและทุ่งนา แอร์เย็น", note:"จองไว้คืนวันที่ 24 · โทร 094-669-9935 · หลัง 1–2 ทุ่มหาพนักงานยาก"},
+  ],
+  tipsTitle:"ข้อควรรู้วันที่ 2",
+  tips:[
+    "เขาปลาร้าเปิดถึง 13:00 เท่านั้น",
+    "เช็กอินแล้วยังมีเวลา: บ้านวิวเขา (ใกล้ที่พัก) หรือบ่อน้ำร้อนสะเมาทอง (เปิดถึง 18:00) ดูในที่เที่ยวเพิ่มเติม",
+    "แผนที่แก้ไว้จะจำในเครื่องนี้เท่านั้น",
+  ],
+  cost:[["หุบป่าตาด","~30"],["ที่อื่นในแผน","ฟรี"],["รวมต่อคน (ผู้ใหญ่)","~30 บาท"]],
+});
+
+// ----- วันที่ 3: พ. 25 พ.ย. 69 · บ้านไร่ → กลับกรุงเทพฯ -----
+Planner({
+  day:3, region:"ut", short:"วันที่ 3 · พ. 25", el:"day3", key:"hpt-d3-ut-v1", start:8*60, endLabel:"ถึงพนาสนธิ์ฯ", date:new Date(2026,10,25), dateLabel:"วันพุธที่ 25 พ.ย. 2569 · บ้านไร่ → กลับบ้าน",
+  est:(a,b)=> b.k==="pan3" ? 195 + (a.k==="wtk" ? 15 : roadMin(a,WTK)) : null, // บ้านไร่ → กรุงเทพฯ ~3.5 ชม.
+  introNote:"ขากลับจากบ้านไร่ถึงมีนบุรี ~3.5 ชม.",
+  stops:[
+    {k:"khun3", fixed:"start", name:"ออกจาก THE KHUN", id:ID.khun, lat:15.3327743, lng:99.6683275, type:"ออกเดินทาง", dur:0, what:"กินข้าวเช้าที่ที่พัก แล้วเช็กเอาต์"},
+    {k:"wtk", name:"วัดถ้ำเขาวง", id:ID.wtk, lat:15.0315139, lng:99.4558604, type:"เที่ยว", dur:60, open:"07:00", close:"17:00", fee:"ฟรี", what:"วัดไม้สักกลางหุบเขาหินปูน เดินขึ้นถ้ำ ~25 นาที"},
+    {k:"giant", name:"ต้นไม้ยักษ์ บ้านสะนำ", id:ID.giant, lat:15.0705958, lng:99.5101389, type:"เที่ยว", dur:30, fee:"ฟรี/บริจาค", what:"ต้นไม้อายุ ~400 ปี จอดที่ลานหน้าตลาด", note:"วันพุธตลาดหน้าต้นไม้ปิด (เปิดแค่ ส.–อา.)"},
+    {k:"lunch3", inline:true, offset:30, name:"ข้าวเที่ยงระหว่างทาง", type:"มื้อเที่ยง", dur:45, what:"แวะตัวอำเภอบ้านไร่ หรือระหว่างทางกลับ"},
+    {k:"pan3", fixed:"end", name:"พนาสนธิ์การ์เด้นโฮม 4", id:ID.panason, lat:13.8299656, lng:100.7433321, type:"ถึงบ้าน", dur:0, what:"ส่งคนที่มีนบุรี", note:"ถ้ากลับต่อไปบางพระ เพิ่มอีก ~1 ชม. 10 นาที"},
+  ],
+  tipsTitle:"ข้อควรรู้วันที่ 3",
+  tips:[
+    "วันนี้เบาที่สุด เพิ่มที่เที่ยวฝั่งบ้านไร่ได้ เช่น วัดถ้ำเขาประทุน ฝายบางสวรรค์ น้ำตกผาร่มเย็น",
+    "ช่วงเย็นเข้ากรุงเทพฯ อาจรถติด เผื่อเวลาเพิ่ม",
+    "แผนที่แก้ไว้จะจำในเครื่องนี้เท่านั้น",
+  ],
+  cost:[["วัดถ้ำเขาวง","ฟรี"],["ต้นไม้ยักษ์","ฟรี/บริจาค"],["รวมต่อคน","~0 บาท"]],
+});
+
+// ===== แท็บที่เที่ยวเพิ่มเติม =====
+let placesRegion = "kk", placesDay = 1;
+function renderPlaces(){
+  const r = placesRegion, days = Object.values(planners).filter(p=>p.region===r);
+  if(!days.some(p=>p.day===placesDay)) placesDay = days[0].day;
+  const pl = planners[placesDay];
+  let h = `<div class="seg"><button class="b ${r==="kk"?"on":""}" data-reg="kk">เขาค้อ<br><small>วันที่ 1 · จ. 23</small></button><button class="b ${r==="ut"?"on":""}" data-reg="ut">อุทัยธานี<br><small>วันที่ 2–3 · อ. 24–พ. 25</small></button></div>`;
+  if(days.length>1) h += `<div class="seg small">`+days.map(p=>`<button class="b ${p.day===placesDay?"on":""}" data-day="${p.day}">เพิ่มเข้า${p.short}</button>`).join("")+`</div>`;
+  h += `<div class="intro">กด <b>＋ เพิ่มเข้า${pl.short}</b> แล้วไปจัดลำดับ/แก้เวลาในแท็บวันนั้น · "ใกล้สุด" คิดจากจุดในวันนั้นตอนนี้ (ประมาณ)</div>`;
+  for(const [title,items] of EXTRA[r]){
+    h += `<h2>${title}</h2><div class="list">`;
+    for(const s of items){
+      const inDay = days.find(p=>p.has(s.k)), near = pl.nearest(s);
+      const closedToday = s.closed && s.closed.includes(pl.wd);
+      const hours = (s.open||s.close) ? `<span class="chip">🕘 ${s.open||""}–${s.close||""}</span>` : "";
+      h += `<div class="stop ${inDay?"added":""}"><div class="time"></div><div class="card">
+        <h3>${esc(s.name)}</h3>
+        <div class="chips"><span class="chip t">${esc(s.type)} · ${durTxt(s.dur)}</span>${hours}${s.fee?`<span class="chip fee">💰 ${esc(s.fee)}</span>`:""}</div>
+        ${near?`<p class="note">📍 ใกล้สุดใน${pl.short}: ${esc(near.s.name)} ~${durTxt(Math.round(near.m/5)*5)}</p>`:""}
+        <p>${esc(s.what)}</p>
+        ${s.note?`<p class="${s.note.includes("⚠️")?"warn":"note"}">${esc(s.note)}</p>`:""}
+        ${closedToday?`<p class="bad">⛔ ปิดวัน${DAYN[pl.wd]} (${pl.short})</p>`:""}
+        <div class="row"><a class="nav-btn" href="${P(s.id[0],s.id[1])}">📍 แผนที่</a><div class="ctrl">
+          ${inDay?`<span class="intrip">✓ อยู่ใน${inDay.short}</span><button class="b" data-rm="${s.k}" data-d="${inDay.day}">ลบ</button>`
+                 :`<button class="b add" data-add="${s.k}">＋ เพิ่มเข้า${pl.short}</button>`}
+        </div></div></div></div>`;
+    }
+    h += `</div>`;
+  }
+  const el = document.getElementById("places"); el.innerHTML = h;
+  el.querySelectorAll("[data-reg]").forEach(b=>b.onclick=()=>{ placesRegion=b.dataset.reg; renderPlaces(); });
+  el.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ placesDay=+b.dataset.day; renderPlaces(); });
+  el.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>pl.act("add",b.dataset.add));
+  el.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>planners[+b.dataset.d].act("rm",b.dataset.rm));
+}
+function renderAll(){ Object.values(planners).forEach(p=>p.render()); renderPlaces(); }
+renderAll();
+
+const VIEWS=["day1","day2","day3","places"];
+function show(){
+  const v=(location.hash||"#day1").slice(1);
+  const k=VIEWS.includes(v)?v:"day1";
+  document.querySelectorAll("section").forEach(s=>s.classList.toggle("on",s.id===k));
+  document.querySelectorAll("#tabs a").forEach(a=>a.classList.toggle("on",a.dataset.v===k));
+  try{ window.scrollTo(0,0); }catch(e){}
+}
+window.addEventListener("hashchange",show);show();
+</script>
+</body>
+</html>
