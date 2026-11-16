@@ -91,6 +91,12 @@ button.time.pin{color:var(--accent)}
 .edit input[type=number]{width:80px}
 .erow{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
 .seg.small .b{font-size:13.5px;padding:8px 4px}
+#exp{display:none;position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.45);padding:calc(16px + env(safe-area-inset-top)) 12px calc(16px + env(safe-area-inset-bottom))}
+#exp.on{display:flex;align-items:center;justify-content:center}
+.exp-box{background:var(--card);border-radius:16px;padding:14px;width:100%;max-width:560px;max-height:100%;display:flex;flex-direction:column;gap:8px}
+.exp-top{display:flex;justify-content:space-between;align-items:center}
+.exp-chk{font-size:14.5px;display:flex;gap:8px;align-items:center}
+#exp-t{width:100%;flex:1;min-height:260px;font:inherit;font-size:13.5px;line-height:1.5;border:1.5px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink)}
 </style>
 </head>
 <body>
@@ -296,7 +302,7 @@ function Planner(cfg){
     h += `<div class="intro">ออก <b>${hm(p.out[0].arr)}</b> → ${esc(cfg.endLabel)} ราว <b>${hm(p.end)}</b> · ขับรวม ~${durTxt(Math.round(p.drive/5)*5)}
           ${cfg.introNote?`<br>${cfg.introNote}`:""}
           <br><span class="note">แตะที่เวลา ✏️ เพื่อแก้เวลาถึง/เวลาอยู่ของแต่ละจุด</span>
-          <div class="tools"><button class="b" data-tool="undo" ${hist.length?"":"disabled"}>↩︎ ย้อนกลับ</button><button class="b" data-tool="reset">รีเซ็ตแผน</button><a class="b" href="#places" data-tool="places">＋ เพิ่มที่เที่ยว</a></div></div>`;
+          <div class="tools"><button class="b" data-tool="undo" ${hist.length?"":"disabled"}>↩︎ ย้อนกลับ</button><button class="b" data-tool="reset">รีเซ็ตแผน</button><a class="b" href="#places" data-tool="places">＋ เพิ่มที่เที่ยว</a><button class="b add" data-tool="export">📤 ส่งออกแผน</button></div></div>`;
     h += p.out.map((r,i)=>card(r,p.inlArr,i,n)).join("");
     h += `<h2>${esc(cfg.tipsTitle)}</h2><ul class="tips">`+cfg.tips.map(t=>`<li>${esc(t)}</li>`).join("")+`</ul>`;
     if(cfg.cost) h += `<h2>💰 ค่าเข้าโดยประมาณ (ต่อคน)</h2><div class="cost">`+cfg.cost.map(([a,b])=>`<div><span>${esc(a)}</span><span>${esc(b)}</span></div>`).join("")+`</div>`;
@@ -320,6 +326,7 @@ function Planner(cfg){
       };
     }
     el.querySelector('[data-tool="undo"]').onclick=undo;
+    el.querySelector('[data-tool="export"]').onclick=openExport;
     el.querySelector('[data-tool="reset"]').onclick=()=>commit(()=>{ state=clone(DEFAULT); });
     el.querySelector('[data-tool="places"]').onclick=()=>{ placesRegion=cfg.region; placesDay=cfg.day; renderPlaces(); };
   }
@@ -334,7 +341,30 @@ function Planner(cfg){
     });
   }
   function undo(){ if(hist.length){ state=hist.pop(); save(); renderAll(); } }
-  const api = {render, plan, act, undo, has:k=>state.order.includes(k), wd, day:cfg.day, region:cfg.region, short:cfg.short,
+  function exportText(){
+    const p = plan(); const L = [];
+    L.push(`【${cfg.dateLabel}】`);
+    L.push(`ออก ${hm(p.out[0].arr)} → ${cfg.endLabel} ราว ${hm(p.end)} · ขับรวม ~${durTxt(Math.round(p.drive/5)*5)}`);
+    const printed = new Set();
+    const legLine = r=>`   🚐 ขับ ~${durTxt(Math.round(r.leg/5)*5)}${(r.inl&&r.inl.length)?" (แวะ"+r.inl.map(x=>x.name.replace("ระหว่างทาง","")).join(", ")+"ระหว่างทาง)":""}`;
+    p.out.forEach((r,i)=>{
+      const s=r.s; if(r.skipped || state.off[s.k]) return;
+      if(s.inline){ const t=p.inlArr[s.k]; if(t==null) return;
+        const nxt = p.out.slice(i+1).find(x=>!x.skipped && !x.s.inline && x.leg!=null);
+        if(nxt && !printed.has(nxt.s.k)){ L.push(legLine(nxt)); printed.add(nxt.s.k); }
+        L.push(`${hm(t)}  ${s.name} (${durTxt(dur(s))})`); return; }
+      if(i>0 && r.leg!=null && !printed.has(s.k)){ L.push(legLine(r)); printed.add(s.k); }
+      let line = `${hm(r.arr)}${dur(s)?"–"+hm(r.dep):""}  ${s.name}`;
+      const extra=[s.type]; if(s.fee) extra.push("ค่าเข้า "+s.fee);
+      line += ` [${extra.join(" · ")}]`;
+      if(s.what) line += ` — ${s.what}`;
+      L.push(line);
+    });
+    const off = state.order.filter(k=>state.off[k]).map(k=>BY[k].name);
+    if(off.length) L.push(`(ยกเลิกแล้ว: ${off.join(", ")})`);
+    return L.join("\n");
+  }
+  const api = {render, plan, act, undo, exportText, has:k=>state.order.includes(k), wd, day:cfg.day, region:cfg.region, short:cfg.short,
     nearest:(x)=>{ let best=null; for(const k of state.order){ const s=BY[k]; if(s.inline||state.off[k]||s.k===x.k||s.lat==null) continue; const m=roadMin(s,x); if(!best||m<best.m) best={s,m}; } return best; }};
   planners[cfg.day]=api; return api;
 }
@@ -443,6 +473,41 @@ function renderPlaces(){
   el.querySelectorAll("[data-day]").forEach(b=>b.onclick=()=>{ placesDay=+b.dataset.day; renderPlaces(); });
   el.querySelectorAll("[data-add]").forEach(b=>b.onclick=()=>pl.act("add",b.dataset.add));
   el.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>planners[+b.dataset.d].act("rm",b.dataset.rm));
+}
+// ===== ส่งออกแผน (สำหรับ ChatGPT ทำรูป) =====
+const PROMPT = `ช่วยออกแบบภาพอินโฟกราฟิกสรุปแผนเที่ยวด้านล่างนี้ เป็นภาษาไทย แนวตั้งสำหรับดูบนมือถือ (สัดส่วน 9:16)
+- แบ่งเป็นการ์ดวันละ 1 ช่วง ใส่วันที่ เวลา และชื่อสถานที่ตามลำดับเป็นไทม์ไลน์
+- ใส่ไอคอนเล็กๆ ตามประเภท (รถ อาหาร วัด วิว ที่พัก) และเวลาขับระหว่างจุด
+- โทนสีเขียวธรรมชาติ ภูเขา หมอก อ่านง่าย ตัวหนังสือชัด สะกดชื่อสถานที่ให้ตรงตามข้อความ
+- ถ้าข้อมูลยาวเกินภาพเดียว ให้ทำวันละ 1 ภาพ`;
+function exportAll(withPrompt){
+  const days = Object.values(planners).sort((a,b)=>a.day-b.day).map(p=>p.exportText()).join("\n\n");
+  const head = "แผนเที่ยว เขาค้อ → หุบป่าตาด (23–25 พ.ย. 2569) · รถตู้ 7–8 คน\n(เวลาเป็นค่าประมาณ)\n\n";
+  return (withPrompt ? PROMPT + "\n\n----------\n" : "") + head + days;
+}
+function openExport(){
+  let m = document.getElementById("exp");
+  if(!m){ m = document.createElement("div"); m.id="exp"; document.body.appendChild(m); }
+  m.innerHTML = `<div class="exp-box">
+    <div class="exp-top"><b>📤 ส่งออกแผน (ตามที่ปรับล่าสุด)</b><button class="b" data-x="close">ปิด</button></div>
+    <label class="exp-chk"><input type="checkbox" id="exp-p" checked> ใส่คำสั่งให้ ChatGPT ทำรูปอินโฟกราฟิก</label>
+    <textarea id="exp-t" readonly></textarea>
+    <div class="erow"><button class="b add" data-x="copy">📋 คัดลอกทั้งหมด</button><button class="b" data-x="dl">⬇️ ดาวน์โหลด .txt</button></div>
+    <p class="note" id="exp-msg">คัดลอกแล้ววางในแชต ChatGPT ได้เลย · ถ้าปุ่มคัดลอกใช้ไม่ได้ ให้แตะค้างในกล่องข้อความ → เลือกทั้งหมด → คัดลอก</p>
+  </div>`;
+  const ta = m.querySelector("#exp-t"), chk = m.querySelector("#exp-p"), msg = m.querySelector("#exp-msg");
+  const fill = ()=>{ ta.value = exportAll(chk.checked); };
+  fill(); chk.onchange = fill; m.classList.add("on");
+  m.querySelector('[data-x="close"]').onclick = ()=>m.classList.remove("on");
+  m.onclick = e=>{ if(e.target===m) m.classList.remove("on"); };
+  m.querySelector('[data-x="copy"]').onclick = async ()=>{
+    try{ await navigator.clipboard.writeText(ta.value); msg.textContent="✅ คัดลอกแล้ว — เปิด ChatGPT แล้ววางได้เลย"; }
+    catch(e){ ta.removeAttribute("readonly"); ta.focus(); ta.select(); try{ document.execCommand("copy"); msg.textContent="✅ คัดลอกแล้ว"; }catch(_){ msg.textContent="คัดลอกอัตโนมัติไม่ได้ ข้อความถูกเลือกไว้แล้ว กดคัดลอกเองได้เลย"; } ta.setAttribute("readonly",""); }
+  };
+  m.querySelector('[data-x="dl"]').onclick = ()=>{
+    try{ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([ta.value],{type:"text/plain;charset=utf-8"})); a.download="แผนเที่ยว-เขาค้อ-หุบป่าตาด.txt"; document.body.appendChild(a); a.click(); a.remove(); msg.textContent="⬇️ ถ้าไม่มีไฟล์ดาวน์โหลด ให้ใช้ปุ่มคัดลอกแทน (บางหน้าต่างไม่อนุญาตดาวน์โหลด)"; }
+    catch(e){ msg.textContent="ดาวน์โหลดไม่ได้ในหน้านี้ ใช้ปุ่มคัดลอกแทน"; }
+  };
 }
 function renderAll(){ Object.values(planners).forEach(p=>p.render()); renderPlaces(); }
 renderAll();
